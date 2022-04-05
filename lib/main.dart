@@ -1,10 +1,5 @@
 import 'package:flutter/material.dart';
 
-// void main() {
-//   // 入口函数
-//   // 1、runApp函数
-//   runApp(const MyApp());
-// }
 main() => runApp(const MyApp());
 
 /*
@@ -13,16 +8,12 @@ main() => runApp(const MyApp());
  * 无状态Widget: StatelessWidget  内容是确定没有状态（data）的改变
  */
 class MyApp extends StatelessWidget {
-  // StatelessWidget 无状态widget
   const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     // 热重载最主要是执行 build方法
-    return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Welcome to Flutter',
-        home: HomePage());
+    return MaterialApp(home: HomePage());
   }
 }
 
@@ -31,41 +22,107 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Welcome to Flutter'),
+        title: const Text('StatefulWidget练习'),
         backgroundColor: Colors.green,
       ),
-      body: HomePageBody(),
+      body: HomePageBody("我找马冬梅"),
     );
   }
 }
 
 class HomePageBody extends StatefulWidget {
+  final String message;
+
+  const HomePageBody(this.message);
+
   @override
   State<StatefulWidget> createState() {
-    return HomPageBodyState();
+    return _HomePageBodyState();
   }
 }
 
-class HomPageBodyState extends State<HomePageBody> {
-  var flag = true;
+/*
+ * 为什么Flutter在设计的时候StatefulWidget的build方法放在State中
+ *  1.build出来的Widget是需要依赖State中的变量(状态/数据)
+ *  2.在Flutter的运行过程中:
+ *    Widget是不断的销毁和创建的
+ *    当我们自己的状态发生改变时, 并不希望重新状态一个新的State
+ */
+// State是加_: 状态这个类只是给Widget使用
+class _HomePageBodyState extends State<HomePageBody> {
+  int _counter = 0;
+
+  _HomePageBodyState() {
+    print("_HomePageBodyState()");
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    print("_HomePageBodyState: initState()");
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Checkbox(
-              value: flag,
-              onChanged: (value) {
-                setState(() {
-                  flag = value ?? true;
-                  print(value);
-                });
-              }),
-          const Text("隐私协议", style: TextStyle(fontSize: 20))
-        ],
-      ),
+    print("_HomePageBodyState: build()");
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        _getButtons(),
+        Text(
+          "当前计数:$_counter",
+          style: TextStyle(fontSize: 25),
+        ),
+        // NOTE: State 默认持有StatefulWidget的引用
+        Text("传递的信息:${widget.message}")
+      ],
     );
+  }
+
+  Widget _getButtons() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        RaisedButton(
+            child: const Text(
+              "+",
+              style: TextStyle(fontSize: 20, color: Colors.white),
+            ),
+            color: Colors.pink,
+            onPressed: () {
+              setState(() {
+                _counter++;
+              });
+            }),
+        RaisedButton(
+            child: const Text(
+              "-",
+              style: TextStyle(fontSize: 20, color: Colors.white),
+            ),
+            color: Colors.purple,
+            onPressed: () {
+              _counter--;
+              setState(() {});
+            })
+      ],
+    );
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    print("_HomePageBodyState: didChangeDependencies()");
+  }
+
+  @override
+  void didUpdateWidget(covariant HomePageBody oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    print("_HomePageBodyState: didUpdateWidget()");
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    print("_HomePageBodyState: dispose()");
   }
 }

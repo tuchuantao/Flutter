@@ -52,8 +52,19 @@ class HomePageBody extends StatefulWidget {
 class _HomePageBodyState extends State<HomePageBody> {
   int _counter = 0;
 
+  _HomePageBodyState() {
+    print("_HomePageBodyState()");
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    print("_HomePageBodyState: initState()");
+  }
+
   @override
   Widget build(BuildContext context) {
+    print("_HomePageBodyState: build()");
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -95,5 +106,23 @@ class _HomePageBodyState extends State<HomePageBody> {
             })
       ],
     );
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    print("_HomePageBodyState: didChangeDependencies()");
+  }
+
+  @override
+  void didUpdateWidget(covariant HomePageBody oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    print("_HomePageBodyState: didUpdateWidget()");
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    print("_HomePageBodyState: dispose()");
   }
 }
