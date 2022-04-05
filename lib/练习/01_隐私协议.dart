@@ -13,7 +13,7 @@ main() => runApp(const MyApp());
  * 无状态Widget: StatelessWidget  内容是确定没有状态（data）的改变
  */
 class MyApp extends StatelessWidget {
-  // StatelessWidget 无状态widget
+  // NOTE: StatelessWidget 无状态widget
   const MyApp({Key? key}) : super(key: key);
 
   @override
@@ -39,6 +39,9 @@ class HomePage extends StatelessWidget {
   }
 }
 
+// StatefullWidget: 继承自StatefulWidget的类(可以接收父Widget传过来的数据)/State类(状态)
+// flag: 状态
+// Stateful不能定义状态 -> 创建一个单独的类, 这个类负责维护状态
 class HomePageBody extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -58,7 +61,7 @@ class HomPageBodyState extends State<HomePageBody> {
           Checkbox(
               value: flag,
               onChanged: (value) {
-                setState(() {
+                setState(() { // NOTE: 更新状态
                   flag = value ?? true;
                   print(value);
                 });
