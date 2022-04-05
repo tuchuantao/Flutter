@@ -24,8 +24,8 @@ class ButtonDemo extends StatelessWidget {
           onPressed: () => print("FlatButton Click"),
         ),
 
-        // 3.OutlineButton
-        OutlineButton(
+        // 3.OutlinedButton
+        OutlinedButton(
           child: Text("OutlineButton"),
           onPressed: () => print("OutlineButton"),
         ),
